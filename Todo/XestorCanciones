@@ -1,0 +1,115 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class XestorCancions {
+
+    // Clase Cancion corrixida
+    public static class Cancion {
+        private String titulo;
+        private String artista;
+
+        public Cancion(String titulo, String artista) {
+            this.titulo = titulo;
+            this.artista = artista;
+        }
+
+        public String getTitulo() {
+            return titulo;
+        }
+
+        public void setTitulo(String titulo) {
+            this.titulo = titulo;
+        }
+
+        public String getArtista() {
+            return artista;
+        }
+
+        public void setArtista(String artista) {
+            this.artista = artista;
+        }
+
+        @Override
+        public String toString() {
+            return titulo + " - " + artista;
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        List<Cancion> lista = new ArrayList<>();
+        int opcion;
+
+        do {
+            // Menú
+            System.out.println("\n--- MENÚ ---");
+            System.out.println("1. Engadir canción");
+            System.out.println("2. Eliminar canción");
+            System.out.println("3. Buscar canción por título");
+            System.out.println("4. Amosar lista de cancións");
+            System.out.println("5. Saír");
+            System.out.print("Escolle unha opción: ");
+            opcion = sc.nextInt();
+            sc.nextLine(); // Limpar buffer
+
+            switch (opcion) {
+                case 1:
+                    // Engadir canción
+                    System.out.print("Título: ");
+                    String titulo = sc.nextLine();
+                    System.out.print("Artista: ");
+                    String artista = sc.nextLine();
+                    lista.add(new Cancion(titulo, artista));
+                    System.out.println("Canción engadida.");
+                    break;
+
+                case 2:
+                    // Eliminar canción
+                    System.out.print("Título da canción a eliminar: ");
+                    String eliminar = sc.nextLine();
+                    boolean atopada = false;
+                    for (Cancion c : lista) {
+                        if (c.getTitulo().equalsIgnoreCase(eliminar)) {
+                            lista.remove(c);
+                            System.out.println("Canción eliminada.");
+                            atopada = true;
+                            break;
+                        }
+                    }
+                    if (!atopada) System.out.println("Canción non atopada.");
+                    break;
+
+                case 3:
+                    // Buscar canción
+                    System.out.print("Título da canción a buscar: ");
+                    String buscar = sc.nextLine();
+                    boolean existe = false;
+                    for (Cancion c : lista) {
+                        if (c.getTitulo().equalsIgnoreCase(buscar)) {
+                            System.out.println("Atopada: " + c);
+                            existe = true;
+                        }
+                    }
+                    if (!existe) System.out.println("Canción non atopada.");
+                    break;
+
+                case 4:
+                    // Amosar todas
+                    System.out.println("\nLista de cancións:");
+                    for (Cancion c : lista) {
+                        System.out.println(c);
+                    }
+                    break;
+
+                case 5:
+                    System.out.println("Saíndo do programa...");
+                    break;
+
+                default:
+                    System.out.println("Opción incorrecta.");
+            }
+
+        } while (opcion != 5);
+    }
+}
