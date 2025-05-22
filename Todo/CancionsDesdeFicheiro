@@ -1,0 +1,69 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Scanner;
+
+public class CancionsDesdeFicheiro {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int opcion;
+
+        do {
+            System.out.println("\n--- MENÚ ---");
+            System.out.println("1. Amosar todas as cancións");
+            System.out.println("2. Buscar canción por título");
+            System.out.println("3. Saír");
+            System.out.print("Escolle unha opción: ");
+            opcion = sc.nextInt();
+            sc.nextLine();
+
+            switch (opcion) {
+                case 1:
+                    // Amosar todas as cancións do ficheiro
+                    try (BufferedReader br = new BufferedReader(new FileReader("cancions.txt"))) {
+                        String liña;
+                        System.out.println("\nCancións no ficheiro:");
+                        while ((liña = br.readLine()) != null) {
+                            System.out.println(liña);
+                        }
+                    } catch (IOException e) {
+                        System.out.println("Erro ao ler o ficheiro: " + e.getMessage());
+                    }
+                    break;
+
+                case 2:
+                    // Buscar por título
+                    System.out.print("Introduce o título: ");
+                    String buscar = sc.nextLine().toLowerCase();
+                    boolean atopada = false;
+
+                    try (BufferedReader br = new BufferedReader(new FileReader("cancions.txt"))) {
+                        String liña;
+                        while ((liña = br.readLine()) != null) {
+                            // Supoñemos separador |
+                            String[] partes = liña.split("\\|");
+                            if (partes.length == 2 && partes[1].trim().equalsIgnoreCase(buscar)) {
+                                System.out.println("Atopada: " + liña);
+                                atopada = true;
+                            }
+                        }
+                        if (!atopada) {
+                            System.out.println("Canción non atopada.");
+                        }
+                    } catch (IOException e) {
+                        System.out.println("Erro ao ler o ficheiro: " + e.getMessage());
+                    }
+                    break;
+
+                case 3:
+                    System.out.println("Saíndo do programa...");
+                    break;
+
+                default:
+                    System.out.println("Opción incorrecta.");
+            }
+
+        } while (opcion != 3);
+    }
+}
